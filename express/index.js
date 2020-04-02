@@ -75,4 +75,4 @@ app.post('/movies/:id',async(request,response)=>{
 
 app.listen(PORT);
 console.log(`📡 Running on port ${PORT}`);
-//mongodb+srv://Brey97:<password>@clusterdenzel-jesay.mongodb.net/test?retryWrites=true&w=majority
+//mongodb+srv://lepler:<Yoda$007>@movies-qv7cr.mongodb.net/test?retryWrites=true&w=majority
