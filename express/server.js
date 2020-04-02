@@ -26,6 +26,7 @@ router.get('/', (req, res) => {
 //   const res = request.params.id;
 //   const result = await mongodb.getmovie_id(res);
 //   response.send(result);
+// test
 // });
 
 router.get('/movies/:search?', async(request, response) => {
