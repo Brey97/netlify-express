@@ -78,7 +78,7 @@ module.exports.insert = async (actor) => {
 
 module.exports.getrandom = async () => {
 
-  const uri = "mongodb+srv://Brey97:115075284815Brey@clusterdenzel-jesay.mongodb.net/test?retryWrites=true&w=majority";
+  const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
 
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   let results
@@ -104,7 +104,7 @@ module.exports.getrandom = async () => {
  */
 module.exports.getmovie_id = async (id) => {
 
-  const uri = "mongodb+srv://Brey97:115075284815Brey@clusterdenzel-jesay.mongodb.net/test?retryWrites=true&w=majority";
+  const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
 
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -130,7 +130,8 @@ module.exports.getmovie_id = async (id) => {
  */
 module.exports.addreview = async (id,updates) => {
 
-  const uri = "mongodb+srv://Brey97:115075284815Brey@clusterdenzel-jesay.mongodb.net/test?retryWrites=true&w=majority";
+  const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
+  
   var result;
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -152,7 +153,7 @@ module.exports.addreview = async (id,updates) => {
 
 module.exports.getmovie_list = async (limit,score) => {
 
-  const uri = "mongodb+srv://Brey97:115075284815Brey@clusterdenzel-jesay.mongodb.net/test?retryWrites=true&w=majority";
+  const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
 
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   let results;
