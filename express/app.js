@@ -3,24 +3,17 @@ const {MongoClient} = require('mongodb');
 const imdb = require('./imdb');
 
 async function main() {
-    /**
-     * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
-     * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
-     */
-    const uri = "mongodb+srv://Brey97:115075284815Brey@clusterdenzel-jesay.mongodb.net/test?retryWrites=true&w=majority";
+  
+    const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
+
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
     try {
-        // Connect to the MongoDB cluster
-        
+       
         await client.connect();
-        // const test = await client.db("sample_airbnb").collection("listingsAndReviews").findOne({_id:'10006546'},{space : 1});
-        // console.log(test);
-        //const movies = await imdb('nm0000243');
-        //console.log(movies);
-        var result = await client.db("movies_imdb").collection("movie_review").find({"metascore":{$gt:70}});
         
-        //console.log(movies.length);
+        var result = await client.db("movies_imdb").collection("movie_review").find({"metascore":{$gt:70}});
+       
         const results = await result.toArray();
         console.log(results[Math.floor(Math.random() * (results.length))]);
 
@@ -37,20 +30,17 @@ async function main() {
         
     }
     finally {
-        // Close the connection to the MongoDB cluster
+        
         await client.close();
     }
     
 }
 
 
-/**
- * Insert to the database all the movies of the actors
- * @param {String} actor
- */
+
 module.exports.insert = async (actor) => {
 
-  const uri = "mongodb+srv://Brey97:115075284815Brey@clusterdenzel-jesay.mongodb.net/test?retryWrites=true&w=majority";
+  const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
   let movies;
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -98,10 +88,7 @@ module.exports.getrandom = async () => {
   return results[Math.floor(Math.random() * (results.length))]
 }
 
-/**
- * Insert to the database all the movies of the actors
- * @param {String} id
- */
+
 module.exports.getmovie_id = async (id) => {
 
   const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
@@ -110,10 +97,8 @@ module.exports.getmovie_id = async (id) => {
 
   try {      
     await client.connect();
-    var result = await client.db("movies_imdb").collection("movie_review").findOne({_id:id});
     
-    //console.log(movies.length);
-    
+    var result = await client.db("movies_imdb").collection("movie_review").findOne({"id":id});
   } catch (e) { 
     console.error(e);
       
@@ -124,20 +109,15 @@ module.exports.getmovie_id = async (id) => {
   return result
 }
 
-/**
- * Insert to the database all the movies of the actors
- * @param {String} id
- */
 module.exports.addreview = async (id,updates) => {
 
   const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
-  
   var result;
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
   try {      
     await client.connect();
-    result = await client.db("movies_imdb").collection("movie_review").updateOne({ _id: id }, { $set: updates });
+    result = await client.db("movies_imdb").collection("movie_review").updateOne({"_id": id }, { $set: updates });
     
   } catch (e) { 
     console.error(e);
@@ -150,31 +130,30 @@ module.exports.addreview = async (id,updates) => {
 }
 
 
-
-module.exports.getmovie_list = async (limit,score) => {
-
+module.exports.getsearchmovie = async (metascore, limit) => {
   const uri = "mongodb+srv://Brey97:115075284815Brey@cluster-qkzte.mongodb.net/test?retryWrites=true&w=majority";
 
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-  let results;
-  let res=[];
-  try {      
+  
+  try {
     await client.connect();
-    var result = await client.db("movies_imdb").collection("movie_review").find({metascore:{$gt:score}}).sort({metascore :-1});
-    results = await result.toArray();
-        //console.log(movies.length);
-    //console.log(movies.length);
-    
-  } catch (e) { 
-    console.error(e);
-      
-  }
-  finally {
-      await client.close();
-  }
-  for (let i = 0; i < limit; i++) {
-    res.push(results[i]);
-  }
-  return res;
-}
-
+    const movies = await client.db("movies_imdb").collection("movie_review").find({metascore:{ $gte: metascore }}).sort({ metascore: -1 }).toArray();
+    if(movies.length>=limit) 
+    {
+      result=[];
+      for (let i = 0; i < limit; i++)
+      {
+         result[i]=movies[i];
+      }
+      return [movies.length, result]
+    }
+    else
+    {
+      return [movies.length, movies]
+    }
+    } catch (e) {
+      console.error(e);
+    } finally {
+          await client.close();
+    }
+};
